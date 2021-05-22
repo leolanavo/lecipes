@@ -3,7 +3,7 @@ import path from 'path';
 
 const rootDir = '../public/build';
 
-export default (page: string) => {
+export default (page: string, data: Record<string, any>) => {
 	const ssrModule = require(`${rootDir}/ssr/${page}.js`);
 
 	const jsFilename =
@@ -12,7 +12,7 @@ export default (page: string) => {
 			filename.split('.')[1] === 'js' &&
 			filename.includes(page));
 
-	const { html, head } = ssrModule.render();
+	const { html, head } = ssrModule.render(data);
 	return `
 		<html lang="en">
 			<head>

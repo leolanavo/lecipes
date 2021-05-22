@@ -20,7 +20,9 @@ fastify.route({
 	url: '/',
 	handler: (_request, reply) => {
 		reply.header('Content-Type', 'text/html');
-		reply.send(template('Home'));
+		reply.send(template('Home', {
+			name: 'Amigurumi',
+		}));
 	},
 });
 

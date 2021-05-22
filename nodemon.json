@@ -1,0 +1,4 @@
+{
+	"ext": "js,json,svelte,ts",
+	"ignore": ["static", "node_modules", "src/**/template.js", "package*.json"]
+}

@@ -1,9 +1,11 @@
 <script lang="ts">
 	import Title from "../components/Title.svelte";
+	import BottomNavigation from "../components/BottomNavigation.svelte";
 </script>
 
 <main>
-	<Title name="Katie" />
+	<Title />
+	<BottomNavigation />
 </main>
 
 <style lang="scss">
@@ -11,13 +13,6 @@
 		background: #000;
 		height: 100vh;
 		width: 100vw;
-	}
-
-	h1 {
-		color: #ff3e00;
-		text-transform: uppercase;
-		font-size: 4em;
-		font-weight: 100;
 	}
 
 	@media (min-width: 640px) {

@@ -25,7 +25,6 @@ const pagesComponentsFiles = fs.readdirSync(pagesComponentsDir);
 
 rimraf.sync(ssrDir);
 rimraf.sync(staticJsPagesDir);
-rimraf.sync(serverOutDir);
 
 const rollupConfig = [];
 
