@@ -1,38 +1,41 @@
 import path from 'path';
+import fs from 'fs';
 
 import Fastify from 'fastify';
 import FastifyStatic from 'fastify-static';
 
-import template from './template';
+import TemplatePlugin from './template';
+import fp from 'fastify-plugin';
+
+const prod = process.env.NODE_ENV === 'production';
 
 const fastify = Fastify({
 	ignoreTrailingSlash: true,
-	logger: true,
+	logger: { prettyPrint: !prod },
 });
 
 fastify.register(FastifyStatic, {
 	root: path.join(__dirname, '../public'),
 });
 
+fastify.register(TemplatePlugin);
 
-fastify.route({
-	method: 'GET',
-	url: '/',
-	handler: (_request, reply) => {
-		reply.header('Content-Type', 'text/html');
-		reply.send(template('Home', {
-			name: 'Amigurumi',
-		}));
-	},
-});
+const start = async () => {
+	const controllerSrcs = fs.readdirSync(path.join(__dirname, 'controllers'));
+	const controllers = await Promise.all(
+		controllerSrcs.map(src => import(`./controllers/${src}`).then(m => m.default))
+	);
 
-fastify.listen('8080', '0.0.0.0', (err, addr) => {
-	if (err) {
-		fastify.log.error(err);
-		process.exit(1);
+	controllers.forEach(entry => fastify.register(entry));
+
+	try {
+		await fastify.ready();
+		await fastify.listen(8080, '0.0.0.0');
+		fastify.log.info(`Server listening on ${fastify.server.address().toString()}`);
+	} catch (e) {
+		fastify.log.error(e);
+		throw new Error(e);
 	}
+};
 
-	fastify.log.info(`Server listening on ${addr}`);
-	console.log(`Server listening on ${addr}`);
-});
-
+start();
