@@ -3,11 +3,11 @@
 	let title: string;
 
 	if (hour >= 12 && hour <= 19) {
-		title = 'Boa tarde';
+	  title = 'Boa tarde';
 	} else if (hour >= 5 && hour <= 12) {
-		title = 'Bom dia';
+	  title = 'Bom dia';
 	} else {
-		title = 'Boa noite';
+	  title = 'Boa noite';
 	}
 </script>
 

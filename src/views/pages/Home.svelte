@@ -1,9 +1,10 @@
 <script lang="ts">
-	import Title from "../components/Title.svelte";
-	import BottomNavigation from "../components/BottomNavigation.svelte";
-	import FilterPills from "../components/FilterPills.svelte";
-	import RecipeList from "../components/RecipeList.svelte";
-	import Hydrate from "../components/Hydrate.svelte";
+	import Hydrate from '../components/Hydrate.svelte';
+
+	import BottomNavigation from '../components/BottomNavigation.svelte';
+	import FilterPills from '../components/FilterPills.svelte';
+	import RecipeList from '../components/RecipeList.svelte';
+	import Title from '../components/Title.svelte';
 
 	export let recipes;
 </script>

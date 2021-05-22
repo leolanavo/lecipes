@@ -1,6 +1,7 @@
 <script lang="ts">
   import type { Recipe } from '../../../typings';
-	import Close from 'svelte-material-icons/Close.svelte';
+
+  import Close from 'svelte-material-icons/Close.svelte';
 
   export let recipes: Recipe[] = [];
   const tags = Array.from(new Set(recipes.reduce((acc, r) => acc.concat(r.tags), [])));

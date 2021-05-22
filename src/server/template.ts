@@ -1,13 +1,17 @@
+import type { FastifyInstance } from 'fastify';
 import fp from 'fastify-plugin';
+
+import type { NextFn } from '../../typings';
 
 const rootDir = '../public/build';
 
-export default fp((app, _opts, next) => {
-	app.decorateReply('view', async function(page: string, model: Record<string, any>) {
-		const ssrModule = require(`${rootDir}/ssr/views/pages/${page}.js`);
+export default fp((app: FastifyInstance, _opts: never, next: NextFn) => {
+  app.decorateReply('view', async function(page: string, model: Record<string, any>) {
+    // eslint-disable-next-line @typescript-eslint/no-var-requires
+    const ssrModule = require(`${rootDir}/ssr/views/pages/${page}.js`);
 
-		const { html, head } = ssrModule.render(model);
-		const rendered = `
+    const { html, head } = ssrModule.render(model);
+    const rendered = `
 			<html lang="en">
 				<head>
 					<meta charset='utf-8'>
@@ -30,10 +34,10 @@ export default fp((app, _opts, next) => {
 			</html>
 		`;
 
-		this.header('Content-Type', 'text/html');
-		this.type('text/html').send(rendered);
-	});
+    this.header('Content-Type', 'text/html');
+    this.type('text/html').send(rendered);
+  });
 
-	next();
+  next();
 });
 

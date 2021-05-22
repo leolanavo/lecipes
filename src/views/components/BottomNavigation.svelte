@@ -1,10 +1,10 @@
 <script lang="ts">
+	import Favorites from 'svelte-material-icons/Heart.svelte';
 	import Home from 'svelte-material-icons/HomeVariant.svelte';
 	import Search from 'svelte-material-icons/Magnify.svelte';
-	import Favorites from 'svelte-material-icons/Heart.svelte';
 
-	const iconSize = "1.5rem";
-	const selectedNavEntry = "Home";
+	const iconSize = '1.5rem';
+	const selectedNavEntry = 'Home';
 </script>
 
 <nav class="bottom-navigation">
@@ -13,7 +13,7 @@
 			<a
 				href=""
 				class="nav-entry"
-				class:nav-entry-focused={selectedNavEntry === "Home"}
+				class:nav-entry-focused={selectedNavEntry === 'Home'}
 			>
 				<Home size={iconSize} />
 				<span>Home</span>
@@ -23,7 +23,7 @@
 			<a
 				href=""
 				class="nav-entry"
-				class:nav-entry-focused={selectedNavEntry === "Search"}
+				class:nav-entry-focused={selectedNavEntry === 'Search'}
 			>
 				<Search size={iconSize} />
 				<span>Search</span>
@@ -33,7 +33,7 @@
 			<a
 				href=""
 				class="nav-entry"
-				class:nav-entry-focused={selectedNavEntry === "Favorites"}
+				class:nav-entry-focused={selectedNavEntry === 'Favorites'}
 			>
 				<Favorites size={iconSize} />
 				<span>Favorites</span>
