@@ -8,9 +8,17 @@
     "start": "node ./dist/server.js",
     "validate": "svelte-check",
     "watch": "rollup -c -w",
-    "lint": "eslint --ext 'ts,svelte' ./src/",
-    "lint:fix": "eslint --fix --ext 'ts,svelte' ./src/",
-    "lint:style": "stylelint **/*.svelte"
+    "lint:es": "eslint --ext 'ts,svelte' ./src/",
+    "lint:es:fix": "eslint --fix --ext 'ts,svelte' ./src/",
+    "lint:style": "stylelint **/*.svelte",
+    "lint:es:staged": "git diff --staged HEAD --name-only --diff-filter=d | grep -e ts$ -e svelte$ | xargs -I {} eslint --ext 'ts,svelte' --no-error-on-unmatched-pattern {}",
+    "lint:style:staged": "git diff --staged HEAD --name-only --diff-filter=d | grep -e svelte$ | xargs -I {} stylelint {}",
+    "pre-commit": "run-p -l lint:es:staged "
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "yarn run pre-commit"
+    }
   },
   "devDependencies": {
     "@rollup/plugin-commonjs": "^17.0.0",
@@ -22,6 +30,7 @@
     "eslint": "^7.27.0",
     "eslint-plugin-svelte3": "^3.2.0",
     "glob": "^7.1.7",
+    "husky": "^6.0.0",
     "node-sass": "^6.0.0",
     "npm-run-all": "^4.1.5",
     "pino-pretty": "^4.8.0",
