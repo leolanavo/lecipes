@@ -1,6 +1,5 @@
 <script lang="ts">
   import type { HomeModel } from '../../../typings';
-import Home from '../pages/Home.svelte';
 
   export let model: HomeModel['RecipesList'];
 </script>
@@ -9,15 +8,11 @@ import Home from '../pages/Home.svelte';
   <ul class="recipe-list">
     {#each model.recipes as recipe}
     <li class="recipe">
-      <a href="">
+      <a href={recipe.link}>
         <img src={recipe.imageSrc} alt={recipe.title} />
         <div>
           <h2>{recipe.title}</h2>
-          <ul class="tag-list">
-            {#each recipe.tags as tag}
-              <li>{tag}</li>
-            {/each}
-          </ul>
+          <span>{recipe.tagsString}</span> 
         </div>
       </a>
     </li>
@@ -47,9 +42,19 @@ import Home from '../pages/Home.svelte';
       display: flex;
     }
 
+    div {
+      display: flex;
+      flex-direction: column;
+    }
+
     h2 {
       font-size: 1.25rem;
       font-weight: 500;
+    }
+
+    span {
+      text-transform: capitalize;
+      font-size: 0.8rem;
     }
 
     img {
@@ -59,22 +64,6 @@ import Home from '../pages/Home.svelte';
       height: $size;
       margin-right: 0.5rem;
       width: $size;
-    }
-  }
-
-  .tag-list {
-    display: flex;
-    margin-top: 0.2rem;
-
-  }
-
-  .tag-list > li {
-    font-size: 0.8rem;
-    font-weight: 300;
-    margin-right: 0.25rem;
-    
-    &:first-of-type {
-      text-transform: capitalize;
     }
   }
 </style>
