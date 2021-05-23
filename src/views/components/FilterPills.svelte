@@ -43,17 +43,17 @@
     overflow-x: auto;
 
     li {
-      display: flex;
-      text-transform: capitalize;
       align-items: center;
-      border-radius: 1rem;
-      padding: 0.25rem 0.5rem;
       border: 1px solid #fff;
+      border-radius: 1rem;
+      display: flex;
       margin-right: 0.25rem;
+      padding: 0.25rem 0.5rem;
+      text-transform: capitalize;
     }
 
-    li.selected {
-      background: rgba($color: #73007d, $alpha: 1.0) 
+    .selected {
+      background: rgba($color: #73007d, $alpha: 1);
     }
   }
 </style>
