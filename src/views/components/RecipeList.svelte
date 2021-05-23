@@ -1,12 +1,13 @@
 <script lang="ts">
-  import type { Recipe } from '../../../typings';
+  import type { HomeModel } from '../../../typings';
+import Home from '../pages/Home.svelte';
 
-  export let recipes: Recipe[] = [];
+  export let model: HomeModel['RecipesList'];
 </script>
 
 <section>
   <ul class="recipe-list">
-    {#each recipes as recipe}
+    {#each model.recipes as recipe}
     <li class="recipe">
       <a href="">
         <img src={recipe.imageSrc} alt={recipe.title} />

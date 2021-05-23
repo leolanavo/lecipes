@@ -10,7 +10,7 @@ export default fp((app: FastifyInstance, _opts: never, next: NextFn) => {
     // eslint-disable-next-line @typescript-eslint/no-var-requires
     const ssrModule = require(`${rootDir}/ssr/views/pages/${page}.js`);
 
-    const { html, head } = ssrModule.render(model);
+    const { html, head } = ssrModule.render({ model });
     const rendered = `
 			<html lang="en">
 				<head>

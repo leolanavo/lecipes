@@ -1,4 +1,6 @@
 <script lang="ts">
+  import type { HomeModel } from '../../../typings';
+
   import Hydrate from '../components/Hydrate.svelte';
 
   import BottomNavigation from '../components/BottomNavigation.svelte';
@@ -6,7 +8,7 @@
   import RecipeList from '../components/RecipeList.svelte';
   import Title from '../components/Title.svelte';
 
-  export let recipes;
+  export let model: HomeModel;
 </script>
 
 <main>
@@ -14,9 +16,9 @@
   <Hydrate
     name="FilterPills"
     component={FilterPills}
-    props={{ recipes }}
+    props={{ model: model.FilterPills }}
   />
-  <RecipeList {recipes} />
+  <RecipeList model={model.RecipesList} />
   <BottomNavigation />
 </main>
 

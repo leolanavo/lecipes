@@ -1,10 +1,9 @@
 <script lang="ts">
-  import type { Recipe } from '../../../typings';
+  import type { HomeModel } from '../../../typings';
 
   import Close from 'svelte-material-icons/Close.svelte';
 
-  export let recipes: Recipe[] = [];
-  const tags = Array.from(new Set(recipes.reduce((acc, r) => acc.concat(r.tags), [])));
+  export let model: HomeModel['FilterPills'];
 
   let selectedTags = null;
 
@@ -29,7 +28,7 @@
         <li class="selected"> {tag} </li>
       {/each}
     {:else}  
-      {#each tags as tag}
+      {#each model.tagList as tag}
         <li on:click={selectTag}> {tag} </li>
       {/each}
     {/if}
