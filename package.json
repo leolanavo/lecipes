@@ -4,20 +4,20 @@
   "private": true,
   "scripts": {
     "build": "rollup -c",
-    "dev": "run-p -l watch start",
-    "start": "node ./dist/server.js",
+    "dev": "run-s -l build start:server",
+    "start:server": "node ./dist/server.js",
     "validate": "svelte-check",
-    "watch": "rollup -c -w",
+    "watch": "nodemon --ext ts,svelte -w src -w typings --exec \"yarn dev\"",
     "lint:es": "eslint --ext 'ts,svelte' ./src/",
     "lint:es:fix": "eslint --fix --ext 'ts,svelte' ./src/",
     "lint:style": "stylelint **/*.svelte",
     "lint:es:staged": "git diff --staged HEAD --name-only --diff-filter=d | grep -e ts$ -e svelte$ | xargs -I {} eslint --ext 'ts,svelte' --no-error-on-unmatched-pattern {}",
     "lint:style:staged": "git diff --staged HEAD --name-only --diff-filter=d | grep -e svelte$ | xargs -I {} stylelint {}",
-    "pre-commit": "run-p -l lint:es:staged "
+    "pre-commit": "run-p -l lint:es:staged lint:style:staged"
   },
   "husky": {
     "hooks": {
-      "pre-commit": "yarn run pre-commit"
+      "pre-commit": "yarn pre-commit"
     }
   },
   "devDependencies": {
@@ -53,6 +53,7 @@
     "fastify": "^3.15.1",
     "fastify-plugin": "^3.0.0",
     "fastify-static": "^4.0.1",
+    "nodemon": "^2.0.7",
     "sirv-cli": "^1.0.0",
     "stylelint": "^13.13.1",
     "stylelint-config-sass-guidelines": "^8.0.0",

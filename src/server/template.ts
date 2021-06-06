@@ -3,12 +3,12 @@ import fp from 'fastify-plugin';
 
 import type { NextFn } from '../../typings';
 
-const rootDir = '../public/build';
+const rootDir = '../public';
 
 export default fp((app: FastifyInstance, _opts: never, next: NextFn) => {
   app.decorateReply('view', async function(page: string, model: Record<string, any>) {
     // eslint-disable-next-line @typescript-eslint/no-var-requires
-    const ssrModule = require(`${rootDir}/ssr/views/pages/${page}.js`);
+    const ssrModule = require(`${rootDir}/ssr/${page}.js`);
 
     const { html, head } = ssrModule.render({ model });
     const rendered = `
@@ -22,7 +22,7 @@ export default fp((app: FastifyInstance, _opts: never, next: NextFn) => {
 					<link rel="preconnect" href="https://fonts.gstatic.com">
 					<link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
 
-					<link rel="stylesheet" href="/build/ssr/views/pages/bundle.css"/>
+					<link rel="stylesheet" href="/ssr/${page}.css"/>
 					<link rel="stylesheet" href="/global.css"/>
 					<script>import('/hydrate.js').then(({ default: f }) => f());</script>
 

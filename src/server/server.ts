@@ -29,7 +29,6 @@ const start = async () => {
   try {
     await fastify.ready();
     await fastify.listen(8080, '0.0.0.0');
-    fastify.log.info(`Server listening on ${fastify.server.address().toString()}`);
   } catch (e) {
     fastify.log.error(e);
     throw new Error(e);

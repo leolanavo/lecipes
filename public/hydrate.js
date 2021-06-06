@@ -7,7 +7,7 @@ export default async () => {
 		const props = element.getAttribute('data-props');
 
 		const { default: Component } =
-			await import(`/build/js/views/components/${component}.js`);
+			await import(`/build/js/${component}.js`);
 
 		new Component({
 			target: element,

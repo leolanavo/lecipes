@@ -19,7 +19,7 @@
     props={{ model: model.FilterPills }}
   />
   <RecipeList model={model.RecipesList} />
-  <BottomNavigation />
+  <BottomNavigation selectedNavEntry='Home' />
 </main>
 
 <style lang="scss">

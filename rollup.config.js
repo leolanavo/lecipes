@@ -1,4 +1,3 @@
-import fs from 'fs';
 import path from 'path';
 import rimraf from 'rimraf';
 import glob from 'glob';
@@ -13,9 +12,8 @@ import { terser } from 'rollup-plugin-terser';
 // ---- SETUP ----
 const production = !process.env.ROLLUP_WATCH;
 
-const staticCssPagesDir = path.join(__dirname, 'public/build/css');
-
-rimraf.sync(path.join(__dirname, 'public/build'));
+rimraf.sync(path.join(__dirname, 'public/js'));
+rimraf.sync(path.join(__dirname, 'public/ssr'));
 rimraf.sync(path.join(__dirname, 'dist'));
 
 // ---- SCSS ----
@@ -29,68 +27,72 @@ const preprocess = sveltePreprocess({
 // ---- SSR FILES ----
 const templates = glob.sync('src/views/pages/**/*.svelte')
 
-const serverSideConfig = template => ({
-	input: template,
-	output: {
-		file: template.replace('src', 'public/build/ssr').replace('svelte', 'js'),
-		format: 'cjs',
-	},
-	plugins: [
-		svelte({
-			preprocess,
-			compilerOptions: {
-				dev: !production,
-				generate: 'ssr',
-				hydratable: true,
-			}
-		}),
-		css({ output: 'bundle.css' }),
-		resolve({
-			dedupe: ['svelte']
-		}),
-		typescript({
-			sourceMap: !production,
-		}),
-		production && terser(),
-	],
-	watch: true,
-});
+const serverSideConfig = template => {
+	const match = template.match(/pages\/(?<name>.+).svelte/);
+	const { name } = match.groups;
+
+	return {
+		input: template,
+		output: {
+			file: `public/ssr/${name}.js`,
+			format: 'cjs',
+		},
+		plugins: [
+			svelte({
+				preprocess,
+				compilerOptions: {
+					dev: !production,
+					generate: 'ssr',
+					hydratable: true,
+				}
+			}),
+			css({ output: `${name}.css` }),
+			resolve({
+				dedupe: ['svelte']
+			}),
+			typescript({
+				sourceMap: !production,
+			}),
+			production && terser(),
+		],
+		watch: true,
+	}
+};
 
 // ---- CLIENT SIDE ----
 const hydrateTemplates = glob.sync(`src/views/components/**/*.svelte`);
 
-const clientSideConfig = template => ({
-	input: template,
-	output: {
-		file: template.replace('src', 'public/build/js').replace('svelte', 'js'),
-	},
-	plugins: [
-		svelte({
-			preprocess,
-			compilerOptions: {
-				dev: !production,
-				hydratable: true,
-			},
-		}),
-		css({
-			output: (styles) => {
-				rimraf.sync(staticCssPagesDir);
-				fs.mkdirSync(staticCssPagesDir);
-				fs.writeFileSync(path.join(staticCssPagesDir, 'bundle.css'), styles);
-			}
-		}),
-		resolve({
-			browser: true,
-			dedupe: ['svelte'],
-		}),
-		typescript({
-			sourceMap: !production,
-			inlineSources: !production,
-		}),
-		production && terser(),
-	],
-	watch: true,
-});
+const clientSideConfig = template => {
+	const match = template.match(/components\/(?<name>.+)/);
+	const { name } = match.groups;
+
+	return {
+		input: template,
+		output: {
+			file: `public/js/${name}.js`,
+		},
+		plugins: [
+			svelte({
+				preprocess,
+				compilerOptions: {
+					dev: !production,
+					hydratable: true,
+				},
+			}),
+			css({ output: `${name}.css` }),
+			resolve({
+				browser: true,
+				dedupe: ['svelte'],
+			}),
+			typescript({
+				sourceMap: !production,
+				inlineSources: !production,
+			}),
+			production && terser(),
+		],
+		watch: true,
+	};
+}
 
 // ---- TS Server ----
 const serverFiles = glob.sync('./src/server/**/*.ts')
@@ -107,32 +109,9 @@ const serverConfig = file => {
 				sourceMap: !production,
 				inlineSources: !production,
 			}),
-			!production && serve(),
 			production && terser(),
 		],
 		watch: true,
-	};
-}
-
-
-function serve() {
-	let server;
-
-	function toExit() {
-		if (server) server.kill(0);
-	}
-
-	return {
-		writeBundle() {
-			if (server) return;
-			server = require('child_process').spawn('yarn', ['start'], {
-				stdio: ['ignore', 'inherit', 'inherit'],
-				shell: true
-			});
-
-			process.on('SIGTERM', toExit);
-			process.on('exit', toExit);
-		}
 	};
 }
 

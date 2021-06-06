@@ -4,14 +4,14 @@
   import Search from 'svelte-material-icons/Magnify.svelte';
 
   const iconSize = '1.5rem';
-  const selectedNavEntry = 'Home';
+  export let selectedNavEntry: 'Home' | 'Diet';
 </script>
 
 <nav class="bottom-navigation">
   <ul>
     <li>
       <a
-        href=""
+        href="/"
         class="nav-entry"
         class:nav-entry-focused={selectedNavEntry === 'Home'}
       >
@@ -31,12 +31,12 @@
     </li>
     <li>
       <a
-        href=""
+        href="/diet"
         class="nav-entry"
-        class:nav-entry-focused={selectedNavEntry === 'Favorites'}
+        class:nav-entry-focused={selectedNavEntry === 'Diet'}
       >
         <Favorites size={iconSize} />
-        <span>Favorites</span>
+        <span>Diet</span>
       </a>
     </li>
   </ul>
