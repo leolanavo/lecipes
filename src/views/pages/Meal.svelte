@@ -1,16 +1,16 @@
 <script lang="ts">
-  import type { DietModel } from '../../../typings';
+  import type { MealModel } from '../../../typings';
 
   import BottomNavigation from '../components/BottomNavigation.svelte';
 
-  export let model: DietModel
+  export let model: MealModel;
 </script>
 
 <main>
   <h1> Dieta </h1>
   <ul>
-    {#each model.weekdays as weekday}
-    <li><a href={`/diet/${weekday.link}`}>{weekday.name}</a></li>
+    {#each model.meals as meal}
+    <li><a href={`/${meal.link}`}>{meal.name}</a></li>
     {/each}
   </ul>
   <BottomNavigation selectedNavEntry='Diet' />
